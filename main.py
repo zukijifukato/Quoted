@@ -30,8 +30,7 @@ def fontNormal(label):
 	label.config(font=('Arial italic', 12), bg='#fff', justify='left', wraplength=580)
 
 def copyToClipboard():
-	pyperclip.copy(quoteText)
-	print(quoteText)
+	pyperclip.copy('"'+quoteText+'"'+"\n\n~"+quoteAuthor)
 
 fetchQuoteList()
 
