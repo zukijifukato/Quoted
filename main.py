@@ -1,6 +1,7 @@
 import tkinter as tk
 import requests
 from secrets import randbelow
+import pyperclip
 
 s = requests.Session()
 
@@ -11,11 +12,12 @@ def fetchQuoteList():
 	quoteListLen = len(quoteList)
 
 def fetchQuote():
+	global quoteText, quoteAuthor
 	randnum = randbelow(quoteListLen)
-	quoteText = '"'+quoteList[randnum]["q"]+'"'
-	quoteAuthor = '~ '+quoteList[randnum]["a"]
-	quoteLabel.config(text=quoteText)
-	authorLabel.config(text=quoteAuthor)
+	quoteText = quoteList[randnum]["q"]
+	quoteAuthor = quoteList[randnum]["a"]
+	quoteLabel.config(text='"'+quoteText+'"')
+	authorLabel.config(text='~ '+quoteAuthor)
 
 def fetchNewList():
 	fetchQuoteList()
@@ -26,6 +28,10 @@ def fontHeader(label):
 
 def fontNormal(label):
 	label.config(font=('Arial italic', 12), bg='#fff', justify='left', wraplength=580)
+
+def copyToClipboard():
+	pyperclip.copy(quoteText)
+	print(quoteText)
 
 fetchQuoteList()
 
@@ -48,6 +54,7 @@ fontNormal(authorLabel)
 
 fetchButton = tk.Button(bottomFrame, text="New Quote", command=fetchQuote)
 fetchNewListButton = tk.Button(bottomFrame,text="New List", command=fetchNewList)
+copyButton = tk.Button(bottomFrame, text='Copy to Clipboard', command=copyToClipboard)
 
 fetchQuote()
 
@@ -56,6 +63,7 @@ authorLabel.grid(row=2, column=0, columnspan=2, stick=tk.W)
 
 fetchButton.grid(row=0, column=0)
 fetchNewListButton.grid(row=0, column=1)
+copyButton.grid(row=0, column=2)
 
 topFrame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 bottomFrame.pack(side=tk.BOTTOM)
